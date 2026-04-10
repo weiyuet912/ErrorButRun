@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lang Sushi - Welcome</title>
+    <style>
+        /* This part is created by GenAI */
+        body {
+            background-image: url("{{ url_for('static', filename='bg_img.png') }}");
+    
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+    
+            background-size: cover !important; 
+    
+            background-color: #fff9f0;
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        /* Admin entry at top right conner */
+        .admin-entry {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 126, 95, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #d35400;
+            font-weight: bold;
+            font-size: 14px;
+            border: 1px solid #ff7e5f;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            z-index: 100;
+        }
+
+        .admin-entry:hover {
+            background: #ff7e5f;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 50px; 
+            border-radius: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            width: 420px; 
+            border: 8px solid #ff7e5f;
+            text-align: center;
+        }
+
+        .sushi-icon { font-size: 70px; margin-bottom: 10px; display: block; }
+        h1 { color: #d35400; font-size: 36px; margin: 0 0 30px 0; font-weight: 900; }
+        .input-box { text-align: left; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; color: #5d4037; font-weight: bold; font-size: 16px; }
+
+        input, select {
+            width: 100%;
+            padding: 18px;
+            border: 3px solid #fce4ec;
+            border-radius: 25px;
+            outline: none;
+            font-size: 18px;
+            box-sizing: border-box;
+            background: white;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: #ff7e5f; }
+
+        .go-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #e66a4e;
+            margin-top: 15px;
+            transition: 0.1s;
+        }
+
+        .go-btn:active { box-shadow: 0 2px 0 #e66a4e; transform: translateY(6px); }
+
+        /* error alert (Toast) */
+        #toast {
+            display: none;
+            position: fixed;
+            top: 10%;
+            background: #ff5252;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-weight: bold;
+            z-index: 999;
+            box-shadow: 0 10px 30px rgba(255, 82, 82, 0.3);
+            animation: fadeInDown 0.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/login" class="admin-entry">⚙️ Manage Mode</a>
+    
+    <div id="toast"></div>
+
+    <div class="card">
+        <span class="sushi-icon">🍣</span>
+        <h1>Lang Sushi</h1>
+        
+        <form id="orderForm">
+            <div class="input-box">
+                <label>Last Name</label>
+                <input type="text" name="last_name" placeholder="Your surname" required>
+            </div>
+
+            <div class="input-box">
+                <label>Phone Number</label>
+                <input type="text" 
+                       name="phone" 
+                       placeholder="Digits only" 
+                       inputmode="numeric" 
+                       oninput="this.value = this.value.replace(/\D/g, '');" 
+                       required>
+            </div>
+
+            <div class="input-box">
+                <label>Number of Guests</label>
+                <select name="people_count" required>
+                    <option value="" disabled selected>Select people</option>
+                    <option value="1">1 Person</option>
+                    <option value="2">2 People</option>
+                    <option value="3">3 People</option>
+                    <option value="4">4 People</option>
+                    <option value="5">5 People</option>
+                    <option value="6">6 People</option>
+                </select>
+            </div>
+
+            <button type="submit" class="go-btn">Start Order ✨</button>
+        </form>
+    </div>
+
+    <script>
+        //this part is created by GenAI
+        
+        const form = document.getElementById('orderForm');
+        const toast = document.getElementById('toast');
+
+        // show Warning
+        function showWarning(message) {
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault(); // Prevent default form submission and handle it using JavaScript
+            
+            const formData = new FormData(form);
+            
+            try {
+                // Send POST request to the backend route '/first_page'
+                const response = await fetch('/first_page', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'error') {
+                // If the backend detects invalid data or the system is outside business hours
+                    showWarning(result.message);
+                } else if (result.status === 'success') {
+                    // If validation is successful, redirect to the next page (menu page)
+                    window.location.href = result.next_page;
+                }
+            } catch (err) {
+                showWarning("Server Connection Error!");
+            }
+        };
+    </script>
+</body>
+</html>

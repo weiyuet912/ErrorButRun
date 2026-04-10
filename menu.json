@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Edamame",
+    "category": "Appetizers",
+    "price": 4.99,
+    "description": "Steamed young soybeans sprinkled with sea salt.",
+    "image": "edamame.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Gyoza",
+    "category": "Appetizers",
+    "price": 6.99,
+    "description": "Six pan-fried Japanese pork dumplings served with dipping sauce.",
+    "image": "gyoza.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Shrimp Tempura",
+    "category": "Appetizers",
+    "price": 8.99,
+    "description": "Four golden shrimp tempura, freshly battered and fried with a happy crunch.",
+    "image": "shrimp_tempura.jpg"
+  },
+    {
+    "id": 4,
+    "name": "Soft Shell Crab",
+    "category": "Appetizers",
+    "price": 10.99,
+    "description": "Lightly battered and deep-fried soft shell crab.",
+    "image": "soft_shell_crab.jpg"
+  },
+    {
+    "id": 5,
+    "name": "Takoyaki",
+    "category": "Appetizers",
+    "price": 7.99,
+    "description": "Traditional or spicy japanese octopus balls, topped with takoyaki sauce, japanese mayo, furikake and bonito flakes",
+    "image": "takoyaki.jpg"
+  },
+    {
+    "id": 6,
+    "name": "Tamago Nigiri (Sweet Egg Omelet)",
+    "category": "Nigiri",
+    "price": 3.99,
+    "description": "2 pieces of soft, sweet egg omelet on sushi rice.",
+    "image": "tamago_nigiri.jpg"
+  },
+    {
+    "id": 7,
+    "name": "Ebi Nigiri (Shrimp)",
+    "category": "Nigiri",
+    "price": 5.99,
+    "description": "2 pieces of cooked shrimp on sushi rice.",
+    "image": "ebi_nigiri.jpg"
+  },
+    {
+    "id": 8,
+    "name": "Maguro Nigiri (Bluefin Tuna)",
+    "category": "Nigiri",
+    "price": 5.99,
+    "description": "2 pieces of lean bluefin tuna on sushi rice.",
+    "image": "maguro_nigiri.jpg"
+  },
+    {
+    "id": 9,
+    "name": "Sake Nigiri (Scottish Salmon)",
+    "category": "Nigiri",
+    "price": 5.99,
+    "description": "2 pieces of Scottish salmon on sushi rice.",
+    "image": "sake_nigiri.jpg"
+  },
+    {
+    "id": 10,
+    "name": "Inari Nigiri",
+    "category": "Nigiri",
+    "price": 3.99,
+    "description": "2 pieces of sweet tofu pouches filled with sushi rice.",
+    "image": "inari_nigiri.jpg"
+  },  
+    {
+    "id": 11,
+    "name": "Unagi Don",
+    "category": "Rice",
+    "price": 18.99,
+    "description": "grilled eel over sushi rice",
+    "image": "unagi_don.jpg"
+  },
+    {
+    "id": 12,
+    "name": "Tori Kare Don",
+    "category": "Rice",
+    "price": 13.99,
+    "description": "Crisspy Chicken Katsu served over rice with our creamy japanese curry.",
+    "image": "tori_kare_don.jpg"
+  },
+    {
+    "id": 13,
+    "name": "Tonkatsu Kare Don",
+    "category": "Rice",
+    "price": 13.99,
+    "description": "Crisspy Pork Cutlet served over rice with our creamy japanese curry.",
+    "image": "tonkatsu_kare_don.jpg"
+  },
+    {
+    "id": 14,
+    "name": "Spicy Ramen",
+    "category": "Noodles",
+    "price": 13.99,
+    "description": "A rich and spicy ramen broth served with noodles, tender pork slices, and fresh toppings.",
+    "image": "spicy_ramen.jpg"
+  },
+    {
+    "id": 15,
+    "name": "Shiro Ramen",
+    "category": "Noodles",
+    "price": 13.99,
+    "description": "A mild and creamy white broth ramen with noodles, sliced pork, and traditional toppings.",
+    "image": "shiro_ramen.jpg"
+  },
+    {
+    "id": 16,
+    "name": "Zaru Soba",
+    "category": "Noodles",
+    "price": 13.99,
+    "description": "Chilled buckwheat soba noodles served with a light dipping sauce and fresh garnishes.",
+    "image": "zaru_soba.jpg"
+  },
+    {
+    "id": 17,
+    "name": "Wakame Udon",
+    "category": "Noodles",
+    "price": 13.99,
+    "description": "Thick udon noodles in a light broth topped with fresh wakame seaweed.",
+    "image": "wakeme_udon.jpg"
+  },
+    {
+    "id": 18,
+    "name": "Kappa Maki",
+    "category": "Maki",
+    "price": 3.99,
+    "description": "Crisp cucumber and sushi rice wrapped in seaweed.",
+    "image": "kappa_maki.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Tamago Maki (Egg)",
+    "category": "Maki",
+    "price": 3.99,
+    "description": "Sweet egg omelet and sushi rice wrapped in seaweed.",
+    "image": "tamago_maki.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Inari Maki",
+    "category": "Maki",
+    "price": 3.99,
+    "description": "Sweet tofu and sushi rice wrapped in seaweed.",
+    "image": "inari_maki.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Sake Maki",
+    "category": "Maki",
+    "price": 5.99,
+    "description": "Fresh Salmon and sushi rice wrapped in seaweed.",
+    "image": "sake_maki.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Green Tea (Hot)",
+    "category": "Drinks",
+    "price": 1.00,
+    "description": "",
+    "image": "green_tea_hot.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Green Tea (Cold)",
+    "category": "Drinks",
+    "price": 1.00,
+    "description": "",
+    "image": "green_tea_cold.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Soft Drinks",
+    "category": "Drinks",
+    "price": 2.50,
+    "description": "Coca-cola/Fanta Orange/Sprite/Pepsi",
+    "image": "soft_drinks.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Mochi Ice Cream",
+    "category": "Dessert",
+    "price": 2.99,
+    "description": "Chewy mochi rice cake filled with green tea, red bean, and black sesame ice cream..",
+    "image": "mochi_ice_cream.jpg"
+  }
+]

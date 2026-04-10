@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lang Sushi - Your Bill</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* This part is created by GenAI */
+
+        :root {
+            --sushi-orange: #ff7e5f;
+            --sushi-brown: #5d4037;
+            --bg-color: #fffaf5;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .bill-container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 5px solid var(--sushi-orange);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bill-header { text-align: center; margin-bottom: 30px; }
+        .bill-header h1 { color: var(--sushi-orange); margin: 10px 0; font-size: 32px; }
+
+        .user-info {
+            background: #fff0ed;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: var(--sushi-brown);
+            line-height: 1.6;
+        }
+
+        .order-list { margin-bottom: 30px; max-height: 400px; overflow-y: auto; }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .item-info h4 { margin: 0; color: var(--sushi-brown); font-size: 16px; }
+        .item-total { font-weight: bold; color: var(--sushi-orange); }
+
+        .price-summary { border-top: 3px solid #eee; padding-top: 20px; }
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            color: var(--sushi-orange);
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .actions { display: flex; gap: 15px; margin-top: 35px; }
+        .btn {
+            flex: 1;
+            padding: 18px;
+            border-radius: 25px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-back { background: #f0f0f0; color: #777; }
+        .btn-pay {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            box-shadow: 0 8px 15px rgba(255, 126, 95, 0.3);
+        }
+
+        .btn:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body>
+
+<div class="bill-container">
+    <div class="bill-header">
+        <span style="font-size: 50px;">🧾</span>
+        <h1>Order Summary</h1>
+    </div>
+
+    <div class="user-info">
+        <b>Name:</b> {{ user.name }} | <b>Phone:</b> {{ user.phone }}<br>
+        <b>Table Size:</b> {{ user.people }} People
+    </div>
+
+    <div class="order-list" id="orderList"></div>
+
+    <div class="price-summary">
+        <div class="total-line">
+            <span>Total:</span>
+            <span id="grandTotal">$0.00</span>
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="/menu" class="btn btn-back">Edit Order</a>
+        <button class="btn btn-pay" onclick="confirmOrder()">Confirm Order</button>
+    </div>
+</div>
+
+<script>
+    // This part is created by GenAI
+    const menuData = {{ dishes | tojson }};
+    const cart = JSON.parse(localStorage.getItem('sushi_cart') || '{}');
+
+    function renderBill() {
+        const listContainer = document.getElementById('orderList');
+        let total = 0;
+        listContainer.innerHTML = '';
+
+        menuData.forEach(item => {
+            const qty = cart[item.name];
+            if (qty && qty > 0) {
+                const subtotal = item.price * qty;
+                total += subtotal;
+                listContainer.innerHTML += `
+                    <div class="order-item">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <small>$${item.price.toFixed(2)} x ${qty}</small>
+                        </div>
+                        <div class="item-total">$${subtotal.toFixed(2)}</div>
+                    </div>
+                `;
+            }
+        });
+        document.getElementById('grandTotal').innerText = `$${total.toFixed(2)}`;
+    }
+
+    async function confirmOrder() {
+        //This part is created by GenAI
+
+        const orderItems = [];
+        for (const [name, qty] of Object.entries(cart)) {
+            if (qty > 0) orderItems.push(`${name} x${qty}`);
+        }
+
+        if (orderItems.length === 0) {
+            Swal.fire({ icon: 'warning', title: 'Empty Cart', text: 'Please select some delicious sushi first!' });
+            return;
+        }
+
+        // send to backend
+        try {
+            const response = await fetch('/confirm_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    items: orderItems.join(', '),
+                    total: document.getElementById('grandTotal').innerText
+                })
+            });
+
+            if (response.ok) {
+                // window to alert order confirmation
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your order has been generated. Thank you for your support!',
+                    icon: 'success',
+                    confirmButtonColor: '#ff7e5f',
+                    confirmButtonText: 'Great!',
+                    backdrop: `rgba(255,126,95,0.2)`
+                }).then((result) => {
+                    localStorage.removeItem('sushi_cart'); // remove after successful confirm order
+                    window.location.href = "/"; // back to first page
+                });
+            }
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Connection failed.' });
+        }
+    }
+
+    window.onload = renderBill;
+</script>
+
+</body>
+</html>

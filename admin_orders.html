@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lang Sushi - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* This part is created by GenAI */
+
+        :root {
+            --sushi-orange: #ff7e5f;
+            --sushi-brown: #5d4037;
+            --bg-color: #fffaf5; 
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            background: white;
+            width: 95%;
+            max-width: 1100px;
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            border: 5px solid var(--sushi-orange);
+            margin: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--sushi-orange);
+            padding-bottom: 20px;
+        }
+
+        .header h1 { color: var(--sushi-orange); margin: 0; font-size: 28px; }
+
+        .logout-btn {
+            text-decoration: none;
+            color: var(--sushi-brown);
+            font-weight: bold;
+            padding: 8px 15px;
+            border: 2px solid var(--sushi-brown);
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: var(--sushi-brown);
+            color: white;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: white;
+            border-radius: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #fff0ed;
+            color: var(--sushi-brown);
+            padding: 18px;
+            text-align: left;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+            font-size: 15px;
+        }
+
+        tr:hover { background: #fffaf9; }
+
+        .order-no-text {
+            font-weight: bold;
+            color: var(--sushi-brown);
+        }
+
+        .price-text { color: var(--sushi-orange); font-weight: 800; font-size: 16px;}
+
+        .badge {
+            background: #f0f0f0;
+            color: var(--sushi-brown);
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .view-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255,126,95,0.3); }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <div class="header">
+        <h1>🍣 Admin Orders (SQL Mode)</h1>
+        <a href="/" class="logout-btn">Exit</a>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Order No.</th> <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Guests</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--This part is created by GenAI-->
+                {% for order in orders %}
+                <tr>
+                    <td style="color: #888; font-size: 14px;">{{ order.time }}</td>
+                    <td class="order-no-text">{{ order.order_no }}</td>
+                    <td><strong>{{ order.name }}</strong></td>
+                    <td>{{ order.phone }}</td>
+                    <td><span class="badge">{{ order.people }}</span></td>
+                    <td class="price-text">{{ order.total }}</td>
+                    <td>
+                        <button class="view-btn" onclick="openOrder('{{ order.name }}', '{{ order.details }}')">
+                            Details
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not orders %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 50px; color: #ccc;">
+                        No orders recorded in the database yet. 🍵
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    //This part is created by GenAI
+    function openOrder(customer, items) {
+        Swal.fire({
+            title: `<span style="color:var(--sushi-orange)">Order: ${customer}</span>`,
+            html: `<div style="text-align:left; background:#f9f9f9; padding:20px; border-radius:15px; line-height:1.8; color: #555;">
+                    ${items.split(', ').join('<br>')}
+                   </div>`,
+            confirmButtonColor: '#ff7e5f',
+            confirmButtonText: 'Close'
+        });
+    }
+</script>
+</body>
+</html>

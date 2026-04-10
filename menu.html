@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lang Sushi - Menu</title>
+    <style>
+        /* This part is created by GenAI */
+
+        :root {
+            --sushi-orange: #ff7e5f;
+            --sushi-brown: #5d4037;
+            --bg-color: #fffaf5;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); margin: 0; display: flex; }
+
+        .sidebar { width: 220px; background: white; height: 100vh; position: fixed; border-right: 2px solid #eee; padding: 30px 20px; box-sizing: border-box; overflow-y: auto; }
+        .sidebar h2 { color: var(--sushi-orange); font-size: 22px; margin-bottom: 20px; border-bottom: 3px solid var(--sushi-orange); display: inline-block; }
+        #categoryContainer { display: flex; flex-direction: column; gap: 10px; }
+        .cat-btn { display: block; width: 100%; padding: 15px; border: 1px solid #f0f0f0; background: #fdfdfd; text-align: left; cursor: pointer; border-radius: 12px; font-weight: bold; color: #777; transition: 0.3s; }
+        .cat-btn:hover { background: #fff0ed; color: var(--sushi-orange); }
+        .cat-btn.active { background: var(--sushi-orange); color: white; box-shadow: 0 4px 12px rgba(255, 126, 95, 0.3); }
+
+        /* main area */
+        .main-content { margin-left: 220px; padding: 40px; flex-grow: 1; padding-bottom: 120px; }
+        .header-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .search-box input { width: 350px; padding: 15px 25px; border-radius: 30px; border: 2px solid #eee; font-size: 16px; outline: none; }
+
+        /* dish display */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .dish-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; }
+        .dish-card img { width: 100%; height: 200px; object-fit: cover; }
+        .dish-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .cat-tag { font-size: 11px; color: var(--sushi-orange); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .dish-card h3 { margin: 5px 0; color: var(--sushi-brown); font-size: 18px; }
+        
+        /* dish description */
+        .dish-desc { font-size: 13px; color: #888; line-height: 1.4; margin-bottom: 15px; min-height: 36px; }
+
+        .dish-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { font-size: 20px; font-weight: 800; color: var(--sushi-orange); }
+
+        /* item quantity */
+        .quantity-control { display: flex; align-items: center; background: #f8f8f8; border-radius: 15px; padding: 5px; }
+        .qty-btn { background: var(--sushi-orange); color: white; border: none; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 18px; }
+        .qty-num { margin: 0 12px; font-weight: bold; font-size: 16px; min-width: 15px; text-align: center; }
+
+        /* shopping cart */
+        .cart-float { position: fixed; bottom: 30px; right: 30px; width: 80px; height: 80px; background: var(--sushi-orange); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(255, 126, 95, 0.5); cursor: pointer; text-decoration: none; z-index: 1000; transition: 0.3s; }
+        .cart-float:hover { transform: scale(1.1); }
+        .cart-count { position: absolute; top: 0; right: 0; background: #ff4757; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: bold; border: 2px solid white; }
+        
+        /* fit in phone and tablet size */
+        @media (max-width: 768px) {
+            body{flex-direction: column;}
+
+            .sidebar{position: relative; width: 100%; height: auto; border-right: none; border-bottom: 2px solid #eee; padding: 15px;}
+            .sidebar h2{font-size: 18px; margin-bottom: 10px;}
+            
+            #categoryContainer{flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 5px;}
+            .cat-btn{white-space: nowrap; padding: 10px 15px; font-size: 14px;}
+
+            .main-content{margin-left: 0; padding: 20px;}
+
+            .header-box{flex-direction: column; align-items: flex-start; gap: 15px;}
+            .search-box input{width: 100%; padding: 12px 20px;}
+            
+            .menu-grid{ grid-template-columns: repeat(2, 1fr); gap: 15px;}
+
+            .dish-card img{height: 150px;}
+            .dish-card h3{font-size: 16px;}
+            .price{font-size: 18px;}
+            
+            .cart-float{width: 65px; height: 65px; bottom: 20px; right: 20px;}
+            .cart-float span{font-size: 28px;}
+        }
+
+        /* smaller screen */
+        @media (max-width: 480px){
+            .menu-grid{grid-template-columns: 1fr;}
+            .dish-card img{height: 180px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <div id="categoryContainer">
+            <button class="cat-btn active" onclick="filterMenu('All', this)">All Items</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header-box">
+            <h1>Our Specialties 🍣</h1>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search dish name..." onkeyup="handleSearch()">
+            </div>
+        </div>
+
+        <!--This part is created by GenAI-->
+        <div class="menu-grid" id="menuGrid">
+            {% for dish in dishes %}
+            <div class="dish-card" data-category="{{ dish.category }}" data-name="{{ dish.name.lower() }}">
+                <img src="/static/{{ dish.image }}" alt="{{ dish.name }}">
+                <div class="dish-body">
+                    <span class="cat-tag">{{ dish.category }}</span>
+                    <h3>{{ dish.name }}</h3>
+                    <p class="dish-desc">{{ dish.description }}</p> 
+                    <div class="dish-footer">
+                        <span class="price">${{ dish.price }}</span>
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="updateQty('{{ dish.name }}', -1)">-</button>
+                            <span class="qty-num" id="qty-{{ dish.name }}">0</span>
+                            <button class="qty-btn" onclick="updateQty('{{ dish.name }}', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <a href="/bill" class="cart-float">
+        <span style="font-size: 35px;">🛒</span>
+        <div class="cart-count" id="totalItemsBadge">0</div>
+    </a>
+
+    <script>
+        //this part is created by GenAI
+
+        let cart = {};
+
+        // generate categories function
+        function generateCategories() {
+            const cards = document.querySelectorAll('.dish-card');
+            const categories = new Set();
+            cards.forEach(card => {
+                const cat = card.getAttribute('data-category');
+                if(cat) categories.add(cat);
+            });
+
+            const container = document.getElementById('categoryContainer');
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'cat-btn';
+                btn.innerText = cat;
+                btn.onclick = function() { filterMenu(cat, this); };
+                container.appendChild(btn);
+            });
+        }
+
+        // update latest quntity
+        function updateQty(name, change) {
+            if (!cart[name]) cart[name] = 0;
+            cart[name] += change;
+            if (cart[name] < 0) cart[name] = 0;
+            
+            // update UI
+            const qtyLabel = document.getElementById(`qty-${name}`);
+            if (qtyLabel) qtyLabel.innerText = cart[name];
+            
+            updateBadge();
+            // autosave to local
+            localStorage.setItem('sushi_cart', JSON.stringify(cart));
+        }
+
+        // update cart badge
+        function updateBadge() {
+            const total = Object.values(cart).reduce((a, b) => a + b, 0);
+            document.getElementById('totalItemsBadge').innerText = total;
+        }
+
+        // filter menu item
+        function filterMenu(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.dish-card').forEach(card => {
+                card.style.display = (cat === 'All' || card.getAttribute('data-category') === cat) ? "flex" : "none";
+            });
+        }
+
+        // search function
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.dish-card').forEach(card => {
+                card.style.display = card.getAttribute('data-name').includes(query) ? "flex" : "none";
+            });
+        }
+
+        // restore data when reload
+        window.onload = function() {
+            generateCategories();
+
+            // read order from local storage
+            const savedCart = localStorage.getItem('sushi_cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                
+                for (const [name, qty] of Object.entries(cart)) {
+                    const qtyLabel = document.getElementById(`qty-${name}`);
+                    if (qtyLabel && qty > 0) {
+                        qtyLabel.innerText = qty;
+                    }
+                }
+                updateBadge();
+            }
+        };
+    </script>
+</body>
+</html>
